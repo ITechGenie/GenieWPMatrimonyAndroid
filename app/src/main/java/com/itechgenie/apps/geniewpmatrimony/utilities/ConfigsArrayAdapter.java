@@ -52,7 +52,8 @@ public class ConfigsArrayAdapter extends ArrayAdapter<String> {
        // rowView.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
         TextView textView = (TextView) rowView.findViewById(R.id.config_name_id);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.logo_id);
-        textView.setText(values[position]);
+        // textView.setText(values[position]);
+        textView.setText("Prakash ");
 
         // Change icon based on name
         String currentItem = values[position];
@@ -66,6 +67,8 @@ public class ConfigsArrayAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        Log.d("ConfigsArrayAdapter", "Position value: " + position ) ;
 
         ViewHolderItem viewHolder ;
 

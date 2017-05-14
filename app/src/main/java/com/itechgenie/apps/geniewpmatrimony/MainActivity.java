@@ -107,13 +107,22 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void onClick(View view) {
+    public void onClickManual(View view) {
 
-        Log.d("MainActivity", "Button Clicked: " + view.getId() );
-        Toast.makeText(MainActivity.this, "Button Clicked: " + view.getId(), Toast.LENGTH_SHORT).show();
+        Log.d("MainActivity", "Manual Config Button Clicked: " + view.getId() );
+        Toast.makeText(MainActivity.this, "Manual Config Button Clicked: " + view.getId(), Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(MainActivity.this, ConfigListActivity.class);
-        // intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+
+    }
+
+    public void onClickConfigKey(View view) {
+
+        Log.d("MainActivity", "Config Key Button Clicked: " + view.getId() );
+        Toast.makeText(MainActivity.this, "Config Key Button Clicked: " + view.getId(), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(MainActivity.this, ConfigurationActivity.class);
         startActivity(intent);
 
     }

@@ -12,5 +12,7 @@
     <string name="list_of_configs_txt">Configuration Lists</string>
 
     <string name="action_exit">Exit</string>
+    <string name="action_add_new">Add New</string>
     <string name="user_note_txt">Puzzled what to do, Please contact your Matrimony Admin to get an Auto Config Key !</string>
+    <string name="title_activity_capture_qr">CaptureQrActivity</string>
 </resources>

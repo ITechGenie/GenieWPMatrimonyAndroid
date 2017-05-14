@@ -31,14 +31,15 @@
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:text="@string/configure_auto_txt"
-        android:id="@+id/configure_auto_btn" />
+        android:id="@+id/configure_auto_btn"
+        android:onClick="onClickConfigKey"/>
 
     <Button
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:text="@string/configure_manually_txt"
         android:id="@+id/configure_manually_btn"
-        android:onClick="onClick"/>
+        android:onClick="onClickManual"/>
 
     <View android:id="@+id/spacer"
         android:layout_width="fill_parent"
