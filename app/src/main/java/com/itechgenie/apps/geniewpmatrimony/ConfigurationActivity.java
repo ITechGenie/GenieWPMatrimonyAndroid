@@ -29,22 +29,6 @@ public class ConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configration);
 
-        Button wViewBt = (Button) findViewById(R.id.openWebViewId);
-        wViewBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WebView webView = (WebView)findViewById(R.id.webView);
-                // you can load an html code
-                // webView.loadData("yourCode Html to load on the webView " , "text/html" , "utf-8");
-                // you can load an URL
-                webView.setWebViewClient(new MyBrowser());
-                webView.getSettings().setLoadsImagesAutomatically(true);
-                webView.getSettings().setJavaScriptEnabled(true);
-                webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-                webView.loadUrl("http://114.1.1.9/wp474/wp-login.php");
-            }
-        });
-
         Button btnQr = (Button) findViewById(R.id.captureQRBtn);
         btnQr.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -94,18 +78,5 @@ public class ConfigurationActivity extends AppCompatActivity {
         });
 
 
-    }
-    private class MyBrowser extends WebViewClient {
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            return super.shouldOverrideUrlLoading(view, request);
-        }
-
-        //@Override
-        public boolean  _shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
-        }
     }
 }

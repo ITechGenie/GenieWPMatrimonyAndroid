@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity
         Log.d("MainActivity", "Manual Config Button Clicked: " + view.getId() );
         Toast.makeText(MainActivity.this, "Manual Config Button Clicked: " + view.getId(), Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(MainActivity.this, ConfigListActivity.class);
+        Intent intent = new Intent(MainActivity.this, ManualConfigActivity.class);
         startActivity(intent);
 
     }

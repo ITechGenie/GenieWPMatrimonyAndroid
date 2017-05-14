@@ -37,11 +37,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.gms:play-services-vision:9.8.0'    
-    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     compile 'com.google.oauth-client:google-oauth-client:1.22.0', {
         exclude group: 'xpp3', module: 'xpp3'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
@@ -52,5 +47,10 @@ dependencies {
     android {
         useLibrary 'org.apache.http.legacy'
     }
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.android.gms:play-services-vision:9.8.0'
+    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     testCompile 'junit:junit:4.12'
 }

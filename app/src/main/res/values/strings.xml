@@ -15,4 +15,5 @@
     <string name="action_add_new">Add New</string>
     <string name="user_note_txt">Puzzled what to do, Please contact your Matrimony Admin to get an Auto Config Key !</string>
     <string name="title_activity_capture_qr">CaptureQrActivity</string>
+    <string name="web_page_go">GO</string>
 </resources>
