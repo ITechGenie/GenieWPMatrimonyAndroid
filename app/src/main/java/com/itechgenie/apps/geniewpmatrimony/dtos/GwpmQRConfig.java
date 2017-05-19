@@ -112,6 +112,23 @@ public class GwpmQRConfig implements Serializable {
         this.gwpm_oauth10a_oauth_verifier = gwpm_oauth10a_oauth_verifier;
     }
 
+    public String getHtmlString() {
+        final StringBuffer sb = new StringBuffer("<h2>GwpmQRConfig</h2><hr>");
+        sb.append("<p><b> gwpm_oauth10a_client_key: </b>").append(gwpm_oauth10a_client_key).append("<br />");
+        sb.append("<b> gwpm_oauth10a_client_secret: </b>").append(gwpm_oauth10a_client_secret).append("<br />");
+        sb.append("<b> gwpm_oauth10a_domain: </b>").append(gwpm_oauth10a_domain).append("<br />");
+        sb.append("<b> gwpm_oauth10a_api_url: </b>").append(gwpm_oauth10a_api_url).append("<br />");
+        sb.append("<b> gwpm_oauth10a_token_request: </b>").append(gwpm_oauth10a_token_request).append("<br />");
+        sb.append("<b> gwpm_oauth10a_token_access: </b>").append(gwpm_oauth10a_token_access).append("<br />");
+        sb.append("<b> gwpm_oauth10a_token_authorize: </b>").append(gwpm_oauth10a_token_authorize).append("<br />");
+        sb.append("<b> gwpm_oauth10a_callback_url: </b>").append(gwpm_oauth10a_callback_url).append("<br />");
+        sb.append("<b> gwpm_oauth10a_oauth_token: </b>").append(gwpm_oauth10a_oauth_token).append("<br />");
+        sb.append("<b> gwpm_oauth10a_oauth_token_secret: </b>").append(gwpm_oauth10a_oauth_token_secret).append("<br />");
+        sb.append("<b> gwpm_oauth10a_oauth_verifier: </b>").append(gwpm_oauth10a_oauth_verifier).append("</p>");
+        sb.append("<hr>");
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("GwpmQRConfig{");

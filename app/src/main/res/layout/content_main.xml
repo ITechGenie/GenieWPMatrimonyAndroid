@@ -24,36 +24,13 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="14dp"
+        android:id="@+id/welcomeMsgId"
         android:text="@string/app_title" />
-
-    <Button
-        android:layout_marginTop="10dp"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:text="@string/configure_auto_txt"
-        android:id="@+id/configure_auto_btn"
-        android:onClick="onClickConfigKey"/>
-
-    <Button
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:text="@string/configure_manually_txt"
-        android:id="@+id/configure_manually_btn"
-        android:onClick="onClickManual"/>
-
-    <View android:id="@+id/spacer"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:textAlignment="center"
-        android:text="@string/user_note_txt"
-        />
+        android:id="@+id/configValueTempId"/>
 
 </LinearLayout>
 

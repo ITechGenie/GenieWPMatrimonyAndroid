@@ -1,23 +1,32 @@
 package com.itechgenie.apps.geniewpmatrimony;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
+
+import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmQRConfig;
+import com.itechgenie.apps.geniewpmatrimony.utilities.GwpmConstants;
+import com.itechgenie.apps.geniewpmatrimony.utilities.ITGDbManager;
+import com.itechgenie.apps.geniewpmatrimony.utilities.ITGUtility;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GwpmConstants {
+
+    private ITGDbManager dbManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +52,40 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Log.d("MainActivity", "Started the main Activity, Loading config !!! ");
+
+        dbManager = new ITGDbManager(this);
+        dbManager.open();
+
+        String configJson = dbManager.fetchByKeyName(GWPM_GLOBAL_CONFIG_JSON);
+
+        Log.d("MainActivity", "Obtained Config: " + configJson);
+
+        if (configJson == null) {
+            Log.d("MainActivity", "No config found, Loading config screen: ");
+            Intent intent = new Intent(MainActivity.this, ConfigurationActivity.class);
+            startActivity(intent);
+        } else {
+
+            TextView tv = (TextView) findViewById(R.id.configValueTempId);
+            TextView tvms = (TextView) findViewById(R.id.welcomeMsgId);
+
+            tvms.setVisibility(View.GONE);
+
+            try {
+                GwpmQRConfig gwpmQRConfig = (GwpmQRConfig) ITGUtility.jsonToObject(configJson, GwpmQRConfig.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    tv.setText(android.text.Html.fromHtml(gwpmQRConfig.getHtmlString(), Html.FROM_HTML_MODE_COMPACT));
+                } else {
+                    tv.setText(android.text.Html.fromHtml(gwpmQRConfig.getHtmlString()));
+                }
+            } catch (Exception e) {
+                Log.d("MainActivity", "Exception in reading value from DB: " + e.getMessage(), e) ;
+                tv.setText(e.getMessage());
+            }
+
+        }
+
     }
 
     @Override
@@ -75,7 +118,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (id == R.id.action_exit) {
-           // return true;
+            // return true;
             finish();
         }
 
@@ -107,23 +150,5 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void onClickManual(View view) {
 
-        Log.d("MainActivity", "Manual Config Button Clicked: " + view.getId() );
-        Toast.makeText(MainActivity.this, "Manual Config Button Clicked: " + view.getId(), Toast.LENGTH_SHORT).show();
-
-        Intent intent = new Intent(MainActivity.this, ManualConfigActivity.class);
-        startActivity(intent);
-
-    }
-
-    public void onClickConfigKey(View view) {
-
-        Log.d("MainActivity", "Config Key Button Clicked: " + view.getId() );
-        Toast.makeText(MainActivity.this, "Config Key Button Clicked: " + view.getId(), Toast.LENGTH_SHORT).show();
-
-        Intent intent = new Intent(MainActivity.this, ConfigurationActivity.class);
-        startActivity(intent);
-
-    }
 }

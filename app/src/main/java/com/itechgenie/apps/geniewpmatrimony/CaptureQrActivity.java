@@ -2,34 +2,33 @@ package com.itechgenie.apps.geniewpmatrimony;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.itechgenie.apps.geniewpmatrimony.utilities.GwpmConstants;
 
 import java.io.IOException;
 
-public class CaptureQrActivity extends AppCompatActivity {
+public class CaptureQrActivity extends AppCompatActivity implements GwpmConstants {
+
+    private static final String LOGGER_NAME = "CaptureQrActivity" ;
 
     public CameraSource cameraSource ;
     BarcodeDetector barcodeDetector ;
@@ -40,7 +39,6 @@ public class CaptureQrActivity extends AppCompatActivity {
         setContentView(R.layout.content_capture_qr);
 
         final SurfaceView cameraView = (SurfaceView)findViewById(R.id.camera_view);
-       final TextView barcodeInfo = (TextView)findViewById(R.id.code_info);
 
         barcodeDetector =
                 new BarcodeDetector.Builder(this)
@@ -96,18 +94,14 @@ public class CaptureQrActivity extends AppCompatActivity {
 
                 if (barcodes.size() != 0) {
                     String qrText = barcodes.valueAt(0).displayValue;
-                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                    v.vibrate(100);
-                    Log.d("CaptureQrActivity", "Obtained Test: " + qrText) ;
-                    barcodeInfo.post(new Runnable() {    // Use the post method of the TextView
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
                         public void run() {
-                            barcodeInfo.setText(    // Update the TextView
-                                    barcodes.valueAt(0).displayValue
-                            );
-
+                            cameraSource.release();
+                            switchToQrProcessor (barcodes.valueAt(0).displayValue) ;
                         }
                     });
-                    switchToQrProcessor (qrText) ;
                 }
             }
         });
@@ -136,14 +130,12 @@ public class CaptureQrActivity extends AppCompatActivity {
 
     public void switchToQrProcessor(String qrValue) {
 
-        // barcodeDetector.release();
-      //  View qrCaptureId =  findViewById(R.id.qrCaptureLayoutId);
-      //  View qrProcessorId =  findViewById(R.id.finalProcessorLayoutId);
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(100);
 
-        View qrCaptureId =  findViewById(R.id.camera_view);
-        View qrProcessorId =  findViewById(R.id.code_info);
-        qrCaptureId.setVisibility(View.GONE);
-        qrProcessorId.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(CaptureQrActivity.this, ConfigConfirmActivity.class);
+        intent.putExtra(GWPM_GLOBAL_CONFIG_JSON, qrValue ) ;
+        startActivity(intent);
 
     }
 
