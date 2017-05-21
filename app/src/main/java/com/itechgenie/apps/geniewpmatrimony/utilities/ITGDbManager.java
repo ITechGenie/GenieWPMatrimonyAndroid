@@ -75,4 +75,9 @@ public class ITGDbManager {
     public void delete(long _id) {
         database.delete(ITGDbHelper.TABLE_NAME, ITGDbHelper._ID + "=" + _id, null);
     }
+
+    public int deleteByKey(String keyName) {
+       return database.delete(ITGDbHelper.TABLE_NAME, ITGDbHelper.KEY_NAME + "='" + keyName + "'", null);
+    }
+
 }

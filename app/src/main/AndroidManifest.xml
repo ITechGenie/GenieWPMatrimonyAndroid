@@ -49,7 +49,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".ConfigurationActivity"></activity>
+        <activity android:name=".ConfigurationActivity" />
         <activity
             android:name=".CaptureQrActivity"
             android:parentActivityName=".ConfigurationActivity">
@@ -64,7 +64,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".ConfigConfirmActivity"></activity>
+        <activity
+            android:name=".ConfigConfirmActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".loaders.ProfileActivity"></activity>
     </application>
 
 </manifest>

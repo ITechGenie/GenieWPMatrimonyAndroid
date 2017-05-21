@@ -19,6 +19,7 @@ public class GwpmQRConfig implements Serializable {
     private String gwpm_oauth10a_oauth_token ;
     private String gwpm_oauth10a_oauth_token_secret ;
     private String gwpm_oauth10a_oauth_verifier ;
+    private String gwpm_oauth10a_api_version = "v1";
 
     public GwpmQRConfig() {
         super() ;
@@ -112,6 +113,14 @@ public class GwpmQRConfig implements Serializable {
         this.gwpm_oauth10a_oauth_verifier = gwpm_oauth10a_oauth_verifier;
     }
 
+    public String getGwpm_oauth10a_api_version() {
+        return gwpm_oauth10a_api_version;
+    }
+
+    public void setGwpm_oauth10a_api_version(String gwpm_oauth10a_api_version) {
+        this.gwpm_oauth10a_api_version = gwpm_oauth10a_api_version;
+    }
+
     public String getHtmlString() {
         final StringBuffer sb = new StringBuffer("<h2>GwpmQRConfig</h2><hr>");
         sb.append("<p><b> gwpm_oauth10a_client_key: </b>").append(gwpm_oauth10a_client_key).append("<br />");
@@ -125,6 +134,7 @@ public class GwpmQRConfig implements Serializable {
         sb.append("<b> gwpm_oauth10a_oauth_token: </b>").append(gwpm_oauth10a_oauth_token).append("<br />");
         sb.append("<b> gwpm_oauth10a_oauth_token_secret: </b>").append(gwpm_oauth10a_oauth_token_secret).append("<br />");
         sb.append("<b> gwpm_oauth10a_oauth_verifier: </b>").append(gwpm_oauth10a_oauth_verifier).append("</p>");
+        sb.append("<b> gwpm_oauth10a_api_version: </b>").append(gwpm_oauth10a_api_version).append("</p>");
         sb.append("<hr>");
         return sb.toString();
     }
@@ -143,6 +153,7 @@ public class GwpmQRConfig implements Serializable {
         sb.append(", gwpm_oauth10a_oauth_token='").append(gwpm_oauth10a_oauth_token).append('\'');
         sb.append(", gwpm_oauth10a_oauth_token_secret='").append(gwpm_oauth10a_oauth_token_secret).append('\'');
         sb.append(", gwpm_oauth10a_oauth_verifier='").append(gwpm_oauth10a_oauth_verifier).append('\'');
+        sb.append(", gwpm_oauth10a_api_version='").append(gwpm_oauth10a_api_version).append('\'');
         sb.append('}');
         return sb.toString();
     }

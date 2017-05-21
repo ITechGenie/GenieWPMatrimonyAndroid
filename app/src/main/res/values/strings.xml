@@ -16,4 +16,12 @@
     <string name="user_note_txt">Puzzled what to do?, Please contact your Genie WP Matrimony Admin to get an Auto Config Key !</string>
     <string name="title_activity_capture_qr">CaptureQrActivity</string>
     <string name="web_page_go">GO</string>
+
+    <!-- Menu Titles -->
+    <string name="menu_my_profile">My Profile</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_messages">Messages</string>
+    <string name="menu_clear_config">Clear Config</string>
+    <string name="menu_settings">Settings</string>
 </resources>

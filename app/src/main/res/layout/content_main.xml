@@ -13,26 +13,35 @@
     tools:context="com.itechgenie.apps.geniewpmatrimony.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
-    >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="14dp"
-        android:id="@+id/welcomeMsgId"
-        android:text="@string/app_title" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/configValueTempId"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/welcomeMsgId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_title"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:textSize="14dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp" >
+
+            <TextView
+                android:id="@+id/configValueTempId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </ScrollView>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:onClick="onClickClearConfigs"
+            android:text="Clear Config"
+            android:layout_alignParentBottom="true"/>
 
 
 

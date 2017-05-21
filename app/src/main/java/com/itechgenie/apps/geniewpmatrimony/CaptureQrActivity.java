@@ -1,13 +1,17 @@
 package com.itechgenie.apps.geniewpmatrimony;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,19 +20,24 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.itechgenie.apps.geniewpmatrimony.utilities.GwpmConstants;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class CaptureQrActivity extends AppCompatActivity implements GwpmConstants {
 
     private static final String LOGGER_NAME = "CaptureQrActivity" ;
+
+    public static final int GET_FROM_GALLERY = 3;
 
     public CameraSource cameraSource ;
     BarcodeDetector barcodeDetector ;
@@ -90,9 +99,8 @@ public class CaptureQrActivity extends AppCompatActivity implements GwpmConstant
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
 
-                Log.d("CaptureQrActivity", "Receiving something: !" + barcodes.size()) ;
-
                 if (barcodes.size() != 0) {
+                    Log.d("CaptureQrActivity", "Received something: !" + barcodes.size()) ;
                     String qrText = barcodes.valueAt(0).displayValue;
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
@@ -137,6 +145,44 @@ public class CaptureQrActivity extends AppCompatActivity implements GwpmConstant
         intent.putExtra(GWPM_GLOBAL_CONFIG_JSON, qrValue ) ;
         startActivity(intent);
 
+    }
+
+    public void onClickUploadQRKey(View view) {
+
+        Log.d("MainActivity", "Upload QR Key Button Clicked: " + view.getId() );
+
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        //startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+        startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Detects request codes
+        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            Uri selectedImage = data.getData();
+            Bitmap bitmap = null;
+            try {
+                BarcodeDetector __barcodeDetector = new BarcodeDetector.Builder(this).build();
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+                SparseArray<Barcode> barcodes = __barcodeDetector.detect(frame);
+                Log.d("CaptureQrActivity", "onActivityResult: Receiving something: !" + barcodes.size()) ;
+
+                if (barcodes.size() != 0) {
+                    String qrText = barcodes.valueAt(0).displayValue;
+                    switchToQrProcessor(qrText) ;
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
