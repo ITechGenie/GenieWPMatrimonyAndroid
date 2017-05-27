@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmProfileDTO;
 import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmQRConfig;
+import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmSearchProfileDTO;
 
 /**
  * Created by Prakash-hp on 21-05-2017.
@@ -32,7 +33,7 @@ public class GwpmBusinessEntity extends ITGOAuth10aRestClient {
         return gwpmBusinessEntity ;
     }
 
-    public GwpmProfileDTO getMyProfile() {
+    public GwpmProfileDTO getMyProfile() throws ITWException {
         return getProfile(null) ;
     }
 
@@ -45,7 +46,7 @@ public class GwpmBusinessEntity extends ITGOAuth10aRestClient {
         }
     }
 
-    public GwpmProfileDTO getProfile(String profileId) {
+    public GwpmProfileDTO getProfile(String profileId) throws ITWException {
 
         Log.d(LOGGER_TAG, "Loading profile: " + profileId ) ;
 
@@ -64,6 +65,25 @@ public class GwpmBusinessEntity extends ITGOAuth10aRestClient {
             Log.d(LOGGER_TAG, "Obtained profile object: " + profileObject) ;
         } catch (Exception e) {
             Log.e(LOGGER_TAG, "Exception occurred: " + e.getMessage() , e) ;
+            throw new ITWException(LOGGER_TAG + "Exception occurred: " + e.getMessage(), e) ;
+        }
+        return profileObject ;
+    }
+
+    public GwpmProfileDTO searchProfile(GwpmSearchProfileDTO gwpmSearchProfileDTO) throws ITWException {
+
+        Log.d(LOGGER_TAG, "Searching profile with: " + gwpmSearchProfileDTO ) ;
+
+        String url = getBaseURL() + GWPM_REST_URL_SEARCH ;
+
+        GwpmProfileDTO profileObject = null ;
+
+        try {
+            profileObject =  (GwpmProfileDTO) get(url, GwpmProfileDTO.class) ;
+            Log.d(LOGGER_TAG, "Obtained profile object: " + profileObject) ;
+        } catch (Exception e) {
+            Log.e(LOGGER_TAG, "Exception occurred: " + e.getMessage() , e) ;
+            throw new ITWException(LOGGER_TAG + "Exception occurred: " + e.getMessage(), e) ;
         }
         return profileObject ;
     }

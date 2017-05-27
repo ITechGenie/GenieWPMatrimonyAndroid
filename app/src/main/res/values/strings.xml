@@ -17,6 +17,9 @@
     <string name="title_activity_capture_qr">CaptureQrActivity</string>
     <string name="web_page_go">GO</string>
 
+    <string name="btn_cancel_txt">Cancel</string>
+    <string name="btn_ok_txt">OK</string>
+
     <!-- Menu Titles -->
     <string name="menu_my_profile">My Profile</string>
     <string name="menu_search">Search</string>
@@ -31,8 +34,11 @@
     <string name="search_gwpm_to_dob">Date of Birth - To</string>
     <string name="search_gwpm_year_from">Age From</string>
     <string name="search_gwpm_year_to">Age To</string>
+    <string name="search_gwpm_age_btwn">Age Between</string>
     <string name="search_gwpm_gender">Gender</string>
-    <string name="search_gwpm_button_txt">Search</string>
+
+    <string name="search_gwpm_btn_ok_txt">Search</string>
+    <string name="search_gwpm_btn_clear_txt">Clear</string>
 
     <string name="age_picker_title">Search</string>
 

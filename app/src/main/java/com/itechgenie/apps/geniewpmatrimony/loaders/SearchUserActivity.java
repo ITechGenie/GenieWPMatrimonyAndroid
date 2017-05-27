@@ -1,6 +1,5 @@
 package com.itechgenie.apps.geniewpmatrimony.loaders;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,30 +7,31 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.itechgenie.apps.geniewpmatrimony.R;
+import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmSearchProfileDTO;
+import com.itechgenie.apps.geniewpmatrimony.tasks.GwpmProfileFetchTask;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import static com.itechgenie.apps.geniewpmatrimony.utilities.ITGUtility.isNotNull;
 
-public class SearchUserActivity extends AppCompatActivity implements View.OnClickListener {
+public class SearchUserActivity extends AppCompatActivity implements View.OnClickListener, GwpmProfileFetchTask.callBack {
 
     final static String LOGGER_TAG = "SearchUserActivity";
 
     private EditText fromDateEtxt;
     private EditText toDateEtxt;
 
-    private DatePickerDialog fromDatePickerDialog;
-    private DatePickerDialog toDatePickerDialog;
+    private EditText gwpmUserId;
+    private EditText gwpmAgeFrom;
+    private EditText gwpmAgeTo;
+    private Spinner gwpmGender;
 
-    private SimpleDateFormat dateFormatter;
 
-    Button b;
     int ageStart = 18;
 
     @Override
@@ -39,65 +39,78 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_user);
 
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        findViewsAndLoad();
 
-        findViewsById();
+    }
 
-        setDateTimeField();
+    @Override
+    public void returnText(Object value) {
+        Log.d(LOGGER_TAG, "Obtained response: " + value);
+    }
 
-        b = (Button) findViewById(R.id.numberPickerBtn);
-        b.setText("" + ageStart);
-        b.setOnClickListener(new View.OnClickListener() {
+    public void clearFields(View view) {
 
-            @Override
-            public void onClick(View v) {
-                showYearDialog();
-            }
-        });
+        gwpmUserId.setText("");
+        gwpmAgeFrom.setText("");
+        gwpmAgeTo.setText("");
 
     }
 
     public void searchUserProfiles(View view) {
 
-        final EditText nameField = (EditText) findViewById(R.id.gwpmUserId);
-        String userId = nameField.getText().toString();
+        String userId = gwpmUserId.getText().toString();
+        String fromAge = gwpmAgeFrom.getText().toString();
+        String toAge = gwpmAgeTo.getText().toString();
+        String gender = gwpmGender.getSelectedItem().toString();
+
+        Log.d(LOGGER_TAG, "userId: " + userId + " - fromAge: " + fromAge + " - toAge: " + toAge + " - gender: " + gender);
+
+        GwpmSearchProfileDTO gwpmSearchProfileDTO = new GwpmSearchProfileDTO();
+
+        if (isNotNull(userId)) {
+            gwpmSearchProfileDTO.setUserId(userId);
+        }
+        if (isNotNull(fromAge)) {
+            gwpmSearchProfileDTO.setGwpm_age_from(fromAge);
+        }
+        if (isNotNull(toAge)) {
+            gwpmSearchProfileDTO.setGwpm_age_from(toAge);
+        }
+        if (isNotNull(gender)) {
+            if ("Female".equalsIgnoreCase(gender)) {
+                gwpmSearchProfileDTO.setGwpm_gender("2");
+            } else {
+                gwpmSearchProfileDTO.setGwpm_gender("1");
+            }
+        } else {
+            Toast.makeText(SearchUserActivity.this, "Select at least one option for search !", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new GwpmProfileFetchTask(SearchUserActivity.this).execute(gwpmSearchProfileDTO);
 
     }
 
-    private void findViewsById() {
+    private void findViewsAndLoad() {
         fromDateEtxt = (EditText) findViewById(R.id.gwpmUserFromDOB);
         fromDateEtxt.setInputType(InputType.TYPE_NULL);
         fromDateEtxt.requestFocus();
 
         toDateEtxt = (EditText) findViewById(R.id.gwpmUserToDOB);
         toDateEtxt.setInputType(InputType.TYPE_NULL);
-    }
 
-    private void setDateTimeField() {
         fromDateEtxt.setOnClickListener(this);
         toDateEtxt.setOnClickListener(this);
 
-        Calendar newCalendar = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        gwpmUserId = (EditText) findViewById(R.id.gwpmUserId);
+        gwpmAgeFrom = (EditText) findViewById(R.id.gwpmUserFromDOB);
+        gwpmAgeTo = (EditText) findViewById(R.id.gwpmUserToDOB);
 
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                fromDateEtxt.setText(dateFormatter.format(newDate.getTime()));
-            }
+        gwpmGender = (Spinner) findViewById(R.id.gwpmUserGender);
 
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
-        toDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                toDateEtxt.setText(dateFormatter.format(newDate.getTime()));
-            }
-
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
+
 
     @Override
     public void onClick(View view) {
@@ -105,7 +118,7 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
         if (view == fromDateEtxt) {
             showAgeSelector(view);
         } else if (view == toDateEtxt) {
-            toDatePickerDialog.show();
+            showAgeSelector(view);
         }
     }
 
@@ -114,9 +127,9 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
         final Dialog d = new Dialog(SearchUserActivity.this);
         d.setTitle(R.string.age_picker_title);
         d.setContentView(R.layout.number_picker_dialog);
-        Button set = (Button) d.findViewById(R.id.button1);
-        Button cancel = (Button) d.findViewById(R.id.button2);
-        final NumberPicker nopicker = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        Button set = (Button) d.findViewById(R.id.search_btn_ok);
+        Button cancel = (Button) d.findViewById(R.id.search_btn_cancel);
+        final NumberPicker nopicker = (NumberPicker) d.findViewById(R.id.numberPickerId);
 
 
         TextView pickerLbl = (TextView) d.findViewById(R.id.numberPickerLabelId);
@@ -125,13 +138,13 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
         nopicker.setMaxValue(ageStart + 60);
         nopicker.setMinValue(ageStart);
         nopicker.setWrapSelectorWheel(false);
-        nopicker.setValue(ageStart);
+        nopicker.setValue(ageStart + 4);
         nopicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((EditText)view).setText(String.valueOf(nopicker.getValue()));
+                ((EditText) view).setText(String.valueOf(nopicker.getValue()));
                 d.dismiss();
             }
         });
@@ -142,44 +155,6 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
             }
         });
         d.show();
-
-
     }
 
-    public void showYearDialog() {
-
-        final Dialog d = new Dialog(SearchUserActivity.this);
-        d.setTitle(R.string.age_picker_title);
-        d.setContentView(R.layout.number_picker_dialog);
-        Button set = (Button) d.findViewById(R.id.button1);
-        Button cancel = (Button) d.findViewById(R.id.button2);
-        final NumberPicker nopicker = (NumberPicker) d.findViewById(R.id.numberPicker1);
-
-
-        TextView pickerLbl = (TextView) d.findViewById(R.id.numberPickerLabelId);
-        pickerLbl.setText(R.string.age_picker_title);
-
-        nopicker.setMaxValue(ageStart + 60);
-        nopicker.setMinValue(ageStart);
-        nopicker.setWrapSelectorWheel(false);
-        nopicker.setValue(ageStart);
-        nopicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-
-        set.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                b.setText(String.valueOf(nopicker.getValue()));
-                d.dismiss();
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.dismiss();
-            }
-        });
-        d.show();
-
-
-    }
 }

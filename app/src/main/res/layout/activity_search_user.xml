@@ -7,9 +7,12 @@
     tools:context="com.itechgenie.apps.geniewpmatrimony.loaders.SearchUserActivity">
 
     <ScrollView
+        android:id="@+id/searchPageScrollerId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="50dp"
+        android:paddingBottom="50dp"
+        android:paddingLeft="3dp"
         android:scrollbars="vertical">
 
         <LinearLayout
@@ -23,11 +26,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/search_menuTitle"
-                android:textSize="14pt" />
+                android:textSize="12pt" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -43,15 +46,15 @@
 
             </LinearLayout>
 
-            <LinearLayout
+           <!-- <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/search_gwpm_from_dob" />
+                    android:text="@string/search_gwpm_year_from" />
 
                 <EditText
                     android:id="@+id/gwpmUserFromDOB"
@@ -63,13 +66,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/search_gwpm_to_dob" />
+                    android:text="@string/search_gwpm_year_to" />
 
                 <EditText
                     android:id="@+id/gwpmUserToDOB"
@@ -77,11 +80,36 @@
                     android:layout_height="wrap_content"
                     android:inputType="text|date" />
 
+            </LinearLayout>  -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_gwpm_age_btwn" />
+
+                <EditText
+                    android:id="@+id/gwpmUserFromDOB"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="text|date" />
+
+                <EditText
+                    android:id="@+id/gwpmUserToDOB"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="text|date" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:paddingTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -97,33 +125,33 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="Year" />
-
-                <Button
-                    android:id="@+id/numberPickerBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="Year" />
-
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/ButtonSendFeedback"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:onClick="searchUserProfiles"
-        android:text="@string/search_gwpm_button_txt" />
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp">
+
+        <Button
+            android:id="@+id/clearFieldsBtnId"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:onClick="clearFields"
+            android:text="@string/search_gwpm_btn_clear_txt" />
+
+        <Button
+            android:id="@+id/saerchProfilesBtnId"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="110dp"
+            android:layout_marginRight="20dp"
+            android:onClick="searchUserProfiles"
+            android:text="@string/search_gwpm_btn_ok_txt" />
+    </RelativeLayout>
+
 </RelativeLayout>
