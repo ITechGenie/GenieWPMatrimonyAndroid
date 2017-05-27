@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmQRConfig;
 import com.itechgenie.apps.geniewpmatrimony.loaders.ProfileActivity;
+import com.itechgenie.apps.geniewpmatrimony.loaders.SearchUserActivity;
 import com.itechgenie.apps.geniewpmatrimony.utilities.GwpmBusinessEntity;
 import com.itechgenie.apps.geniewpmatrimony.utilities.GwpmConstants;
 import com.itechgenie.apps.geniewpmatrimony.utilities.ITGDbManager;
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity
         int itemId = item.getItemId() ;
         switch (itemId) {
             case MENU_PERSONAL_PROFILE: loadMyProfile() ; break;
-            case MENU_SEARCH: loadActivity(itemId); break;
+            case MENU_SEARCH: loadSearchProfile(); break;
             case MENU_GALLERY: loadActivity(itemId); break;
             case MENU_MESSAGES: loadActivity(itemId); break;
             case MENU_SETTINGS: loadActivity(itemId); break;
@@ -201,6 +202,14 @@ public class MainActivity extends AppCompatActivity
         // GwpmBusinessEntity.object().getMyProfile() ;
 
         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(intent);
+
+    }
+
+    public void loadSearchProfile() {
+        Toast.makeText(this, "Loading search profile page : ",Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(MainActivity.this, SearchUserActivity.class);
         startActivity(intent);
 
     }

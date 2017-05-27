@@ -24,4 +24,19 @@
     <string name="menu_messages">Messages</string>
     <string name="menu_clear_config">Clear Config</string>
     <string name="menu_settings">Settings</string>
+
+    <string name="search_menuTitle">Search Profiles</string>
+    <string name="search_gwpm_id">User ID</string>
+    <string name="search_gwpm_from_dob">Date of Birth - From</string>
+    <string name="search_gwpm_to_dob">Date of Birth - To</string>
+    <string name="search_gwpm_year_from">Age From</string>
+    <string name="search_gwpm_year_to">Age To</string>
+    <string name="search_gwpm_gender">Gender</string>
+    <string name="search_gwpm_button_txt">Search</string>
+
+    <string name="age_picker_title">Search</string>
+
+    <string name="search_gwpm_gender_male">Male</string>
+    <string name="search_gwpm_gender_female">Female</string>
+
 </resources>
