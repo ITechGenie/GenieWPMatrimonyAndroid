@@ -32,10 +32,7 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
     private SimpleDateFormat dateFormatter;
 
     Button b;
-    static Dialog d ;
-    //int year = Calendar.getInstance().get(Calendar.YEAR);
-
-    int ageStart = 18 ;
+    int ageStart = 18;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +46,8 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
         setDateTimeField();
 
         b = (Button) findViewById(R.id.numberPickerBtn);
-        b.setText(""+ageStart);
-        b.setOnClickListener(new View.OnClickListener()
-        {
+        b.setText("" + ageStart);
+        b.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -90,9 +86,7 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
                 fromDateEtxt.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
-        fromDatePickerDialog.getDatePicker().setSpinnersShown(true);
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         toDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
@@ -102,21 +96,20 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
                 toDateEtxt.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override
     public void onClick(View view) {
-        Log.d(LOGGER_TAG, "Onclick is called: " + view.getId()) ;
-        if(view == fromDateEtxt) {
-            fromDatePickerDialog.show();
-        } else if(view == toDateEtxt) {
+        Log.d(LOGGER_TAG, "Onclick is called: " + view.getId());
+        if (view == fromDateEtxt) {
+            showAgeSelector(view);
+        } else if (view == toDateEtxt) {
             toDatePickerDialog.show();
         }
     }
 
-    public void showYearDialog()
-    {
+    public void showAgeSelector(final View view) {
 
         final Dialog d = new Dialog(SearchUserActivity.this);
         d.setTitle(R.string.age_picker_title);
@@ -129,22 +122,57 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
         TextView pickerLbl = (TextView) d.findViewById(R.id.numberPickerLabelId);
         pickerLbl.setText(R.string.age_picker_title);
 
-        nopicker.setMaxValue(ageStart+60);
+        nopicker.setMaxValue(ageStart + 60);
         nopicker.setMinValue(ageStart);
         nopicker.setWrapSelectorWheel(false);
         nopicker.setValue(ageStart);
         nopicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
-        set.setOnClickListener(new View.OnClickListener()
-        {
+        set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((EditText)view).setText(String.valueOf(nopicker.getValue()));
+                d.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+        d.show();
+
+
+    }
+
+    public void showYearDialog() {
+
+        final Dialog d = new Dialog(SearchUserActivity.this);
+        d.setTitle(R.string.age_picker_title);
+        d.setContentView(R.layout.number_picker_dialog);
+        Button set = (Button) d.findViewById(R.id.button1);
+        Button cancel = (Button) d.findViewById(R.id.button2);
+        final NumberPicker nopicker = (NumberPicker) d.findViewById(R.id.numberPicker1);
+
+
+        TextView pickerLbl = (TextView) d.findViewById(R.id.numberPickerLabelId);
+        pickerLbl.setText(R.string.age_picker_title);
+
+        nopicker.setMaxValue(ageStart + 60);
+        nopicker.setMinValue(ageStart);
+        nopicker.setWrapSelectorWheel(false);
+        nopicker.setValue(ageStart);
+        nopicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
+        set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 b.setText(String.valueOf(nopicker.getValue()));
                 d.dismiss();
             }
         });
-        cancel.setOnClickListener(new View.OnClickListener()
-        {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 d.dismiss();
