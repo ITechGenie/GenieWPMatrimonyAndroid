@@ -15,5 +15,6 @@ public interface GwpmConstants {
     public static String GWPM_HMAC_SHA1 = "HMAC-SHA1" ;
     public static String GWPM_SIGN_VERSION = "1.0";
     public static String GWPM_PROFILE_SEARCH_RESULTS = "gwpm_profile_search_results" ;
+    public static String GWPM_PROFILE_LOAD_ID = "gwpm_profile_load_id" ;
 
 }

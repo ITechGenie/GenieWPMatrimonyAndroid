@@ -45,4 +45,7 @@
     <string name="search_gwpm_gender_male">Male</string>
     <string name="search_gwpm_gender_female">Female</string>
 
+    <string name="profile_profile_thumb">No Profile PIC</string>
+    <string name="profile_view_btn">View</string>
+
 </resources>

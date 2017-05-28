@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void loadSearchProfile() {
-        Toast.makeText(this, "Loading search profile page : ",Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "Loading search profile page : ",Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(MainActivity.this, SearchUserActivity.class);
         startActivity(intent);

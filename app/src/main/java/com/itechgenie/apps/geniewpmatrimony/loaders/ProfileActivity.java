@@ -11,6 +11,8 @@ import com.itechgenie.apps.geniewpmatrimony.R;
 import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmProfileDTO;
 import com.itechgenie.apps.geniewpmatrimony.tasks.GwpmProfileFetchTask;
 
+import static com.itechgenie.apps.geniewpmatrimony.utilities.GwpmConstants.GWPM_PROFILE_LOAD_ID;
+
 public class ProfileActivity extends AppCompatActivity  implements GwpmProfileFetchTask.callBack {
 
     final static String LOGGER_TAG = "ProfileActivity";
@@ -20,7 +22,12 @@ public class ProfileActivity extends AppCompatActivity  implements GwpmProfileFe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        new GwpmProfileFetchTask(ProfileActivity.this).execute();
+        String profileId = null ;
+        Bundle b = this.getIntent().getExtras();
+        if (b != null)
+            profileId = b.getString(GWPM_PROFILE_LOAD_ID);
+
+        new GwpmProfileFetchTask(ProfileActivity.this).execute(profileId);
 
     }
 

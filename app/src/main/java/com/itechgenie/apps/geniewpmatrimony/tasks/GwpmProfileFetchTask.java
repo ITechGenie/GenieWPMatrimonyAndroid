@@ -21,8 +21,6 @@ public class GwpmProfileFetchTask extends AsyncTask<Object, Void, Object> {
         public void returnText(Object value);
     }
 
-    ;
-
     callBack cb;
     ProgressDialog pd;
 
@@ -40,7 +38,11 @@ public class GwpmProfileFetchTask extends AsyncTask<Object, Void, Object> {
                 for (Object f : params) {
                     Log.d(LOGGER_TAG, "Param: " + f);
                 }
-                return GwpmBusinessEntity.object().searchProfile((GwpmSearchProfileDTO) params[0]);
+                if (params[0] instanceof GwpmSearchProfileDTO) {
+                    return GwpmBusinessEntity.object().searchProfile((GwpmSearchProfileDTO) params[0]);
+                } else {
+                    return GwpmBusinessEntity.object().getProfile((String) params[0]) ;
+                }
             } else {
                 Log.d(LOGGER_TAG, "No Param obtained, fetching my profile !");
                 return GwpmBusinessEntity.object().getMyProfile();

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.itechgenie.apps.geniewpmatrimony.R;
@@ -12,7 +13,9 @@ import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmQRConfig;
 import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmSearchResultDTO;
 import com.itechgenie.apps.geniewpmatrimony.utilities.GwpmBusinessEntity;
 import com.itechgenie.apps.geniewpmatrimony.utilities.ITGUtility;
+import com.itechgenie.apps.geniewpmatrimony.utilities.ProfileArrayAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +36,6 @@ public class SearchResultActivity extends AppCompatActivity {
         /* if (this.getIntent().getExtras() != null)
             json = this.getIntent().getExtras().getString(GWPM_PROFILE_SEARCH_RESULTS);  */
 
-
         GwpmQRConfig gwpmQRConfig = GwpmBusinessEntity.getGwpmQRConfig();
 
         String baseImgBaseUrl = gwpmQRConfig.getImageBaseURL();
@@ -43,6 +45,8 @@ public class SearchResultActivity extends AppCompatActivity {
             json = (List) b.getSerializable(GWPM_PROFILE_SEARCH_RESULTS);
 
         Log.d(LOGGER_TAG, "Obtained response: - " + json);
+
+        List<GwpmSearchResultDTO>  gwpmSearchResultDTOs = new ArrayList<GwpmSearchResultDTO>() ;
 
         StringBuffer stringBuffer = new StringBuffer();
         try {
@@ -54,22 +58,35 @@ public class SearchResultActivity extends AppCompatActivity {
                     Log.d(LOGGER_TAG, "Thumb URL: " + thumbUrl ) ;
                     gwpmProfileDTO.setThumbImageUrl(thumbUrl);
                 }
+                gwpmSearchResultDTOs.add(gwpmProfileDTO) ;
                 stringBuffer.append(gwpmProfileDTO.getHtmlString());
             }
         } catch (Exception e) {
             Log.e(LOGGER_TAG, "Exception occurred: " + e.getMessage(), e);
         }
 
+        Log.d(LOGGER_TAG, "Number of items Obtained: " + gwpmSearchResultDTOs.size() ) ;
+
         TextView tv = (TextView) findViewById(R.id.gwpmSearchResultShowId);
+        ListView listView = (ListView) findViewById(R.id.searchResultListId);
 
         if (("").equalsIgnoreCase(stringBuffer.toString())) {
             stringBuffer.append("<h2>No Profiles found !<h2/>");
+
+            tv.setVisibility(TextView.VISIBLE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                tv.setText(android.text.Html.fromHtml(stringBuffer.toString(), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                tv.setText(android.text.Html.fromHtml(stringBuffer.toString()));
+            }
+        } else {
+            tv.setText("");
+            tv.setVisibility(TextView.GONE);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            tv.setText(android.text.Html.fromHtml(stringBuffer.toString(), Html.FROM_HTML_MODE_COMPACT));
-        } else {
-            tv.setText(android.text.Html.fromHtml(stringBuffer.toString()));
-        }
+        //listView.setAdapter(new ArrayAdapter<GwpmSearchResultDTO>(this, android.R.layout.simple_list_item_1, gwpmSearchResultDTOs));
+        listView.setAdapter(new ProfileArrayAdapter(this, R.layout.profile_list_layout,
+                gwpmSearchResultDTOs.toArray(new GwpmSearchResultDTO[gwpmSearchResultDTOs.size()]))) ;
     }
 }
