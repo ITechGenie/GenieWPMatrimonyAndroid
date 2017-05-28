@@ -214,6 +214,8 @@ public class ITGRestClient {
             respone.append(output);
         }
 
+        Log.d(TAG, "Response Text: " + respone ) ;
+
         conn.disconnect();
 
         return jsonStrToObject(respone.toString(), responseType);
@@ -271,6 +273,8 @@ public class ITGRestClient {
         while ((output = responseBuffer.readLine()) != null) {
             respone.append(output);
         }
+
+        Log.d(TAG, "Response Text: " + respone ) ;
 
         conn.disconnect();
 

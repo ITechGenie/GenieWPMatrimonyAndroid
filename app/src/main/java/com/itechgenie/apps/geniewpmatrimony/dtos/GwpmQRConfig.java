@@ -2,11 +2,19 @@ package com.itechgenie.apps.geniewpmatrimony.dtos;
 
 import java.io.Serializable;
 
+import static com.itechgenie.apps.geniewpmatrimony.utilities.GwpmConstants.GWPM_FORWARD_SLASH;
+import static com.itechgenie.apps.geniewpmatrimony.utilities.GwpmConstants.GWPM_IMAGE_URL_BASE;
+import static com.itechgenie.apps.geniewpmatrimony.utilities.GwpmConstants.GWPM_REST_URL_BASE;
+
 /**
  * Created by Prakash-hp on 14-05-2017.
  */
 
 public class GwpmQRConfig implements Serializable {
+
+    private String baseURL = null ;
+
+    private String imgBaseUrl = null ;
 
     private String gwpm_oauth10a_client_key ;
     private String gwpm_oauth10a_client_secret ;
@@ -23,6 +31,27 @@ public class GwpmQRConfig implements Serializable {
 
     public GwpmQRConfig() {
         super() ;
+    }
+
+
+    public String getBaseURL () {
+        if (baseURL != null) {
+            return baseURL ;
+        } else {
+            baseURL = getGwpm_oauth10a_domain() + GWPM_REST_URL_BASE
+                    + GWPM_FORWARD_SLASH + getGwpm_oauth10a_api_version() ;
+            return  baseURL ;
+        }
+    }
+
+    public String getImageBaseURL () {
+        if (imgBaseUrl != null) {
+            return imgBaseUrl ;
+        } else {
+            imgBaseUrl = getGwpm_oauth10a_domain()
+                    + GWPM_IMAGE_URL_BASE ;
+            return  imgBaseUrl ;
+        }
     }
 
     public String getGwpm_oauth10a_client_key() {

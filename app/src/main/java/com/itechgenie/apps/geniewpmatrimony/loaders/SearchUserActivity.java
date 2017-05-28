@@ -1,6 +1,7 @@
 package com.itechgenie.apps.geniewpmatrimony.loaders;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -15,7 +16,11 @@ import android.widget.Toast;
 
 import com.itechgenie.apps.geniewpmatrimony.R;
 import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmSearchProfileDTO;
+import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmSearchResultDTO;
 import com.itechgenie.apps.geniewpmatrimony.tasks.GwpmProfileFetchTask;
+import com.itechgenie.apps.geniewpmatrimony.utilities.GwpmConstants;
+
+import java.util.ArrayList;
 
 import static com.itechgenie.apps.geniewpmatrimony.utilities.ITGUtility.isNotNull;
 
@@ -46,6 +51,16 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void returnText(Object value) {
         Log.d(LOGGER_TAG, "Obtained response: " + value);
+
+        Intent intent = new Intent(SearchUserActivity.this, SearchResultActivity.class);
+        intent.putExtra("_"+ GwpmConstants.GWPM_PROFILE_SEARCH_RESULTS, String.valueOf(value)) ;
+
+        Bundle b = new Bundle();
+        b.putSerializable(GwpmConstants.GWPM_PROFILE_SEARCH_RESULTS, (ArrayList<GwpmSearchResultDTO>) value);
+        intent.putExtras(b);
+        // intent.setClass(this, SearchResultActivity.class);
+        startActivity(intent);
+
     }
 
     public void clearFields(View view) {

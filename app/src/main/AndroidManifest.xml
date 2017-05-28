@@ -71,15 +71,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".loaders.ProfileActivity"  android:parentActivityName=".MainActivity">
+        <activity
+            android:name=".loaders.ProfileActivity"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".loaders.SearchUserActivity"  android:parentActivityName=".MainActivity">
+        <activity
+            android:name=".loaders.SearchUserActivity"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".loaders.SearchResultActivity"
+            android:parentActivityName=".loaders.SearchUserActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".loaders.SearchUserActivity" />
         </activity>
     </application>
 

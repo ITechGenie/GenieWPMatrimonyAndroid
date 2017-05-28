@@ -4,7 +4,13 @@ import android.util.Log;
 
 import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmProfileDTO;
 import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmQRConfig;
+import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmRequestDTO;
+import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmResponseDTO;
 import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmSearchProfileDTO;
+import com.itechgenie.apps.geniewpmatrimony.dtos.GwpmSearchResultDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Prakash-hp on 21-05-2017.
@@ -23,6 +29,10 @@ public class GwpmBusinessEntity extends ITGOAuth10aRestClient {
         gwpmQRConfig = gwpmQRConfigIn;
     }
 
+    public static GwpmQRConfig getGwpmQRConfig () {
+        return gwpmQRConfig ;
+    }
+
     public static GwpmBusinessEntity object() {
         if (gwpmQRConfig == null)
             throw new UnsupportedOperationException(LOGGER_TAG + " Object init failure due to empty Config !") ;
@@ -37,20 +47,11 @@ public class GwpmBusinessEntity extends ITGOAuth10aRestClient {
         return getProfile(null) ;
     }
 
-    private String getBaseURL () {
-        if (baseURL != null) {
-            return baseURL ;
-        } else {
-            return  gwpmQRConfig.getGwpm_oauth10a_domain() + GWPM_REST_URL_BASE
-                     + GWPM_FORWARD_SLASH + gwpmQRConfig.getGwpm_oauth10a_api_version() ;
-        }
-    }
-
     public GwpmProfileDTO getProfile(String profileId) throws ITWException {
 
         Log.d(LOGGER_TAG, "Loading profile: " + profileId ) ;
 
-        String url = getBaseURL() ;
+        String url = gwpmQRConfig.getBaseURL() ;
 
         if (profileId != null) {
             url += GWPM_REST_URL_PROFILE + GWPM_FORWARD_SLASH + profileId ;
@@ -58,34 +59,41 @@ public class GwpmBusinessEntity extends ITGOAuth10aRestClient {
             url += GWPM_REST_URL_PROFILE + GWPM_ME ;
         }
 
-        GwpmProfileDTO profileObject = null ;
+        GwpmProfileDTO gwpmProfileDTO = null ;
 
         try {
-            profileObject =  (GwpmProfileDTO) get(url, GwpmProfileDTO.class) ;
-            Log.d(LOGGER_TAG, "Obtained profile object: " + profileObject) ;
+            GwpmResponseDTO responseObject =  (GwpmResponseDTO) get(url, GwpmResponseDTO.class) ;
+            Log.d(LOGGER_TAG, "Obtained profile object: " + responseObject) ;
+            gwpmProfileDTO = responseObject.getData(GwpmProfileDTO.class);
         } catch (Exception e) {
             Log.e(LOGGER_TAG, "Exception occurred: " + e.getMessage() , e) ;
             throw new ITWException(LOGGER_TAG + "Exception occurred: " + e.getMessage(), e) ;
         }
-        return profileObject ;
+
+        return gwpmProfileDTO ;
     }
 
-    public GwpmProfileDTO searchProfile(GwpmSearchProfileDTO gwpmSearchProfileDTO) throws ITWException {
+    public List<GwpmSearchResultDTO> searchProfile(GwpmSearchProfileDTO gwpmSearchProfileDTO) throws ITWException {
 
         Log.d(LOGGER_TAG, "Searching profile with: " + gwpmSearchProfileDTO ) ;
 
-        String url = getBaseURL() + GWPM_REST_URL_SEARCH ;
+        String url = gwpmQRConfig.getBaseURL() + GWPM_REST_URL_SEARCH ;
 
-        GwpmProfileDTO profileObject = null ;
+        List<GwpmSearchResultDTO> profileLists = null ;
 
         try {
-            profileObject =  (GwpmProfileDTO) get(url, GwpmProfileDTO.class) ;
-            Log.d(LOGGER_TAG, "Obtained profile object: " + profileObject) ;
+
+            GwpmRequestDTO<GwpmSearchProfileDTO> gwpmRequestDTO = new GwpmRequestDTO<GwpmSearchProfileDTO>() ;
+            gwpmRequestDTO.setData(gwpmSearchProfileDTO);
+
+            GwpmResponseDTO responseObject =  (GwpmResponseDTO) post(url, gwpmRequestDTO, GwpmResponseDTO.class) ;
+            Log.d(LOGGER_TAG, "Obtained profile object: " + responseObject) ;
+            profileLists = responseObject.getData((new ArrayList<GwpmProfileDTO>()).getClass());
         } catch (Exception e) {
             Log.e(LOGGER_TAG, "Exception occurred: " + e.getMessage() , e) ;
             throw new ITWException(LOGGER_TAG + "Exception occurred: " + e.getMessage(), e) ;
         }
-        return profileObject ;
+        return profileLists ;
     }
 
 }
